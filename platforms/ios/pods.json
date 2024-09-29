@@ -1,0 +1,16 @@
+{
+    "declarations": {
+        "use_frameworks!": {
+            "declaration": "use_frameworks!",
+            "count": 1
+        }
+    },
+    "sources": {},
+    "libraries": {
+        "VIDVOCR": {
+            "name": "VIDVOCR",
+            "spec": "=2.8.1",
+            "count": 1
+        }
+    }
+}

@@ -1,0 +1,39 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {
+      "res/xml/config.xml": {
+        "parents": {
+          "/*": [
+            {
+              "xml": "<feature name=\"VIDVOCRPlugin\"><param name=\"android-package\" value=\"cordova_plugin_vidvocr.VIDVOCRPlugin\" /></feature>",
+              "count": 1
+            }
+          ]
+        }
+      }
+    }
+  },
+  "installed_plugins": {
+    "cordova-plugin-vidvocr": {
+      "PACKAGE_NAME": "com.valify.ocrCordovaSampleApp"
+    }
+  },
+  "dependent_plugins": {},
+  "modules": [
+    {
+      "id": "cordova-plugin-vidvocr.VIDVOCRPlugin",
+      "file": "plugins/cordova-plugin-vidvocr/www/VIDVOCRPlugin.js",
+      "pluginId": "cordova-plugin-vidvocr",
+      "clobbers": [
+        "VIDVOCRPlugin"
+      ]
+    }
+  ],
+  "plugin_metadata": {
+    "cordova-plugin-vidvocr": "2.1.7"
+  }
+}
