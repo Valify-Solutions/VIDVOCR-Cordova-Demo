@@ -1,29 +1,77 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
+const token = "";
+const baseUrl = "";
+const bundleKey = "";
+const language = "en";
+const primaryColor = "#000000"; // Assuming a primary color
+const testOCR = true;
 
-// Wait for the deviceready event before using any of Cordova's device APIs.
-// See https://cordova.apache.org/docs/en/latest/cordova/events/events.html#deviceready
-document.addEventListener('deviceready', onDeviceReady, false);
 
-function onDeviceReady() {
-    // Cordova is now initialized. Have fun!
+// OCR specific parameters
+const ocrParams = {
+access_token: token,
+base_url: baseUrl,
+bundle_key: bundleKey,
+language: language,
+primary_color: primaryColor,
+document_verification: false,
+data_validation: false,
+return_data_validation_error: false,
+review_data: false,
+capture_only_mode: false,
+manual_capture_mode: false,
+preview_captured_image: false,
+headers: {
+    'Custom-Header': 'Value' // Example header
+},
+enable_logging: false,
+collect_user_info: true,
+advanced_confidence: true,
+profession_analysis: true,
+document_verification_plus: true
+};
 
-    console.log('Running cordova-' + cordova.platformId + '@' + cordova.version);
-    document.getElementById('deviceready').classList.add('ready');
+
+// Start process function refactored to only initialize relevant SDK based on condition
+function startProcess() {
+    if (testOCR) { // Assuming testOCR determines which SDK to use
+        console.log("Starting OCR");
+        window.VIDVOCRPlugin.startOCR(ocrParams, null, function(result) {
+            console.log("response initiated");
+            const s = result.toString();
+            const jsonResult = JSON.parse(s);
+            console.log("OCR Success:", jsonResult);
+            const state = jsonResult.nameValuePairs.state;
+            console.log(state)
+            switch (state) {
+                case "SUCCESS":
+                    console.log("OCR was successful.");
+                    break;
+                case "CAPTURED_IMAGES":
+                    console.log("Live captured images (one per time)");
+                    // Add more logic here as necessary
+                    break;
+            }
+        }, function(error) {
+            const s = error.toString();
+            const jsonResult = JSON.parse(s);
+            console.error("OCR Error:", jsonResult);
+            const state = jsonResult.nameValuePairs.state;
+            switch (state) {
+                case "ERROR":
+                    console.log("A Builder Error");
+                    // Add more logic here as necessary
+                    break;
+                case "FAILURE":
+                    console.log("A Service Failure");
+                    // Add more logic here as necessary
+                    break;
+                case "EXIT":
+                    console.log("Process was exited by the user.");
+                    // Add more logic here as necessary
+                    break;
+            }
+        });
+    }
 }
+
+document.getElementById("button").addEventListener("click", startProcess);
